@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Clock3, CheckCircle2, FileDown, Building2, MapPin, BadgeCheck, Sparkles, ArrowRight } from "lucide-react";
 import type { Subvencion } from "@/data/subvenciones";
+import BorradorModal from "./BorradorModal";
 import { cn } from "@/lib/utils";
 
 function diasColor(d: number) {
@@ -12,6 +13,7 @@ function diasColor(d: number) {
 
 export function SubvencionCard({ s }: { s: Subvencion }) {
   const [done, setDone] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_8px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-xl">
       {s.destacada && (
@@ -70,11 +72,12 @@ export function SubvencionCard({ s }: { s: Subvencion }) {
           >
             {done ? (<><BadgeCheck className="h-4 w-4" /> Borrador solicitado · Te avisamos</>) : (<>Solicitar Asistencia <ArrowRight className="h-4 w-4" /></>)}
           </button>
-          <button className="flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800">
+          <button className="flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800" onClick={() => setModalOpen(true)}>
             <FileDown className="h-4 w-4" /> Descargar Borrador
           </button>
         </div>
       </div>
+      <BorradorModal subvencionId={s.id} tituloSubvencion={s.titulo} isOpen={modalOpen} onClose={() => { setModalOpen(false); setDone(true); }} />
     </article>
   );
 }
